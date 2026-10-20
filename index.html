@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Task Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 24px 16px;
+    }
+    .app {
+      max-width: 450px;
+      margin: 30px auto;
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px #0001;
+    }
+    h1 { color: #243b53; }
+    .entry { display: flex; gap: 8px; }
+    input {
+      min-width: 0;
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccd;
+      border-radius: 8px;
+    }
+    button {
+      padding: 11px;
+      border: 0;
+      border-radius: 8px;
+      background: #1769e0;
+      color: white;
+      cursor: pointer;
+    }
+    ul { padding: 0; list-style: none; }
+    li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+    li span { flex: 1; overflow-wrap: anywhere; }
+    li.done span {
+      text-decoration: line-through;
+      color: #777;
+    }
+    .delete { background: #d93636; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>My Task Manager</h1>
+    <p>Plan your day, one task at a time.</p>
+    <div class="entry">
+      <input id="taskInput" placeholder="Enter a task">
+      <button onclick="addTask()">Add</button>
+    </div>
+    <ul id="taskList"></ul>
+  </main>
+
+  <script>
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      const task = input.value.trim();
+      if (!task) {
+        input.focus();
+        return;
+      }
+
+      const li = document.createElement("li");
+      const check = document.createElement("input");
+      check.type = "checkbox";
+      check.style.flex = "none";
+
+      const text = document.createElement("span");
+      text.textContent = task;
+
+      check.addEventListener("change", () => {
+        li.classList.toggle("done", check.checked);
+      });
+
+      const del = document.createElement("button");
+      del.textContent = "Delete";
+      del.className = "delete";
+      del.onclick = () => li.remove();
+
+      li.append(check, text, del);
+      document.getElementById("taskList").append(li);
+      input.value = "";
+      input.focus();
+    }
+
+    document.getElementById("taskInput")
+      .addEventListener("keydown", event => {
+        if (event.key === "Enter") addTask();
+      });
+  </script>
+</body>
+</html>
